@@ -32,14 +32,15 @@ jobs:
           New-Item -ItemType Directory -Force -Path bin
           Invoke-WebRequest -Uri "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" -OutFile "ffmpeg.zip"
           Expand-Archive -Path ffmpeg.zip -DestinationPath ffmpeg_temp
-          Get-ChildItem -Path ffmpeg_temp -Filter ffmpeg.exe -Recurse | Copy-Item -Destination bin/
-          Get-ChildItem -Path ffmpeg_temp -Filter ffprobe.exe -Recurse | Copy-Item -Destination bin/
+          Get-ChildItem -Path ffmpeg_temp -Filter ffmpeg.exe -Recurse | Copy-Item -Destination bin\
+          Get-ChildItem -Path ffmpeg_temp -Filter ffprobe.exe -Recurse | Copy-Item -Destination bin\
           Remove-Item -Path ffmpeg.zip
           Remove-Item -Recurse -Force -Path ffmpeg_temp
+          Get-ChildItem bin\
 
       - name: Build executable with Nuitka
         run: |
-          python -m nuitka --standalone --windows-disable-console --enable-plugin=tk-inter --include-data-files=logo.ico=logo.ico --include-data-dir=locales=locales --include-data-dir=bin=bin --windows-icon-from-ico=logo.ico --output-filename=AleniaPorter.exe main.py
+          python -m nuitka --standalone --assume-yes-for-downloads --windows-console-mode=disable --enable-plugin=tk-inter --include-data-files=logo.ico=logo.ico --include-data-dir=locales=locales --include-data-dir=bin=bin --windows-icon-from-ico=logo.ico --output-filename=AleniaPorter.exe main.py
 
       - name: Package build
         run: |
